@@ -1,0 +1,34 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+         {
+           "type": "node",
+           "request": "launch",
+           "name": "SVNPROD vs SVNPRODHA",
+           "program": "${workspaceFolder}/updateSHA1_Diff_SVNPROD_vs_SVNPRODHA.js"
+         },
+         {
+           "type": "node",
+           "request": "launch",
+           "name": "SVNPRODHA vs SERVERPRODHA",
+           "program": "${workspaceFolder}/updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA.js"
+         },
+         {
+           "type": "node",
+           "request": "launch",
+           "name": "SVNPROD vs SERVERPROD",
+           "program": "${workspaceFolder}/updateSHA1_Diff_SVNPROD_vs_SERVERPROD.js"
+         },
+         {
+           "type": "node",
+           "request": "launch",
+           "name": "SERVERPROD vs SERVERPRODHA",
+           "program": "${workspaceFolder}/updateSHA1_Diff_SERVERPROD_vs_SERVERPRODHA.js"
+         },
+
+    ]
+}
+

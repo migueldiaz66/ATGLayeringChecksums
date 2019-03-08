@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  gather_facts: true
+  
+  tasks:
+
+  - name: Get sha1sum
+    shell: 'find /tmp/liv_atg_layering_config -type f -exec sha1sum "{}" + > /tmp/checklist.chk'
+
+  - name: Replace 
+    shell: sed -e "s/[[:space:]]\+/,/g" /tmp/checklist.chk > /tmp/checklist1.chk
+
+  - name: Header
+    shell: sed -e '1i\sha1SVR,pathSVR' /tmp/checklist1.chk > /tmp/checklist2.chk
+
+  - name: Replace 2
+    shell: sed -e "s/\/tmp\/liv_atg_layering_config\+/./g" /tmp/checklist2.chk > /tmp/checklist3.chk
+
+  - name: clean
+    shell: rm /tmp/checklist.chk  && mv /tmp/checklist3.chk /tmp/checklist.chk && rm /tmp/checklist1.chk /tmp/checklist2.chk 
+

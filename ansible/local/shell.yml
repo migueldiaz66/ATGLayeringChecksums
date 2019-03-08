@@ -1,0 +1,18 @@
+---
+- hosts: localhost   
+
+  vars:
+    - command:  "{{cmd}}" 
+  
+  gather_facts: true
+
+  tasks:
+
+  - name:  excecute {{command}}
+    shell: "{{command}}"
+    register: res
+
+  - name: output 
+    debug: 
+      msg: "{{res}}"
+     
