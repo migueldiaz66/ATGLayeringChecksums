@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // Configuring the database
-const dbConfig = require('../config/database.config.js');
+const dbConfig = require('../../config/database.config.js');
 const mongoose = require('mongoose');
 
 
@@ -39,7 +39,7 @@ app.get('/', (req, res) => {
     res.send( "API for ATG Layering Checksums Consistency --- Infra Backoffice Liverpool --- mdiazm01@liverpool.com.mx" );
 });
 
-//require('./routes/routes.js')(app);
+require('./routes/SERVERPROD_vs_SERVERPRODHA')(app);
 
 // listen for requests
 app.listen(9002,'0.0.0.0', () => {

@@ -298,7 +298,7 @@ async function updateSHA1_Diff_SERVERPROD_vs_SERVERPRODHA(){
                   findAllLokiCollectionProd(loadedLokiCollectionSERVERPROD).then((SERVERPRODRes) => {
                     let SERVERPROD = SERVERPRODRes
                     //todo change this to a new one
-                    genereate_SHA1_Diff_SVNPROD_vs_SVNPRODHA(SERVERPROD, loadedLokiCollectionSERVERPPRODHA).then((diffRes) => {
+                    genereate_SHA1_Diff_SVNPROD_vs_SVNPRODHA(SERVERPROD, loadedLokiCollectionSERVERPPRODHA, SERVER_ExportTo).then((diffRes) => {
                       let diff = diffRes
                       removeLoki(diff).then((cleanDiffRes) => {
                         let cleanDiff = cleanDiffRes
@@ -325,7 +325,7 @@ async function updateSHA1_Diff_SERVERPROD_vs_SERVERPRODHA(){
 //async function calculate_SHA1_Diff_SVNPROD_vs_SVNPRODHA() {
 
 
-async function genereate_SHA1_Diff_SVNPROD_vs_SVNPRODHA(prod, LokiCollectionProdHA) {
+async function genereate_SHA1_Diff_SVNPROD_vs_SVNPRODHA(prod, LokiCollectionProdHA, path) {
 
   return new Promise(async (resolve, reject) => {
 ; 
@@ -347,8 +347,8 @@ async function genereate_SHA1_Diff_SVNPROD_vs_SVNPRODHA(prod, LokiCollectionProd
               Diff.push(r1)
             } else if (item.sha1SVN != prodHA.sha1SVN) {
               //console.log("El checksum de %s no coincide", item.pathSVN)
-              var src1 = to + '/PROD/' + item.pathSVN.substring(1)
-              var src2 = to + '/PRODHA/' + prodHA['pathSVN'].substring(1)
+              var src1 = path  + '/PROD/' + item.pathSVN.substring(1)
+              var src2 = path  + '/PRODHA/' + prodHA['pathSVN'].substring(1)
               var fileSrc1 = fs.readFileSync(src1, "utf8");
               var fileSrc2 = fs.readFileSync(src2, "utf8");
               var diff = await jsdiff.diffChars(fileSrc1, fileSrc2);

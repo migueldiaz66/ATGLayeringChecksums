@@ -8,31 +8,31 @@
            "type": "node",
            "request": "launch",
            "name": "SVNPROD vs SVNPRODHA",
-           "program": "${workspaceFolder}/updateSHA1_Diff_SVNPROD_vs_SVNPRODHA.js"
+           "program": "${workspaceFolder}/src/updateSHA1_Diff_SVNPROD_vs_SVNPRODHA.js"
          },
          {
            "type": "node",
            "request": "launch",
            "name": "SVNPRODHA vs SERVERPRODHA",
-           "program": "${workspaceFolder}/updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA.js"
+           "program": "${workspaceFolder}/src/updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA.js"
          },
          {
            "type": "node",
            "request": "launch",
            "name": "SVNPROD vs SERVERPROD",
-           "program": "${workspaceFolder}/updateSHA1_Diff_SVNPROD_vs_SERVERPROD.js"
+           "program": "${workspaceFolder}/src/updateSHA1_Diff_SVNPROD_vs_SERVERPROD.js"
          },
          {
            "type": "node",
            "request": "launch",
            "name": "SERVERPROD vs SERVERPRODHA",
-           "program": "${workspaceFolder}/updateSHA1_Diff_SERVERPROD_vs_SERVERPRODHA.js"
+           "program": "${workspaceFolder}/src/updateSHA1_Diff_SERVERPROD_vs_SERVERPRODHA.js"
          },
          {
           "type": "node",
           "request": "launch",
           "name": "API",
-          "program": "${workspaceFolder}/api/server.js"
+          "program": "${workspaceFolder}/src/api/server.js"
         },
 
     ]
