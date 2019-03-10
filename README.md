@@ -15,7 +15,7 @@ ejemplo ansible Trae los archivos via scp
 ansible-playbook updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA.yml --extra-vars "cmd='scp -r mdiazm@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers /tmp/updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA'"
 
 
-ansible-playbook updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA.yml --extra-vars "cmd='scp -r wldamin@172.16.213.192:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers /tmp/updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA'"
+ansible-playbook updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA.yml --extra-vars "cmd='scp -r wladmin@172.16.213.192:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers /tmp/updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA'"
 
 ***************************************************************************
 srv   172.16.213.192 Adminserver QA wladmin
