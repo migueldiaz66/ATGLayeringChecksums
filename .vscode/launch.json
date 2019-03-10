@@ -28,6 +28,12 @@
            "name": "SERVERPROD vs SERVERPRODHA",
            "program": "${workspaceFolder}/updateSHA1_Diff_SERVERPROD_vs_SERVERPRODHA.js"
          },
+         {
+          "type": "node",
+          "request": "launch",
+          "name": "API",
+          "program": "${workspaceFolder}/api/server.js"
+        },
 
     ]
 }
