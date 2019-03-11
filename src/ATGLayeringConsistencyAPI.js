@@ -373,9 +373,9 @@ async function genereate_SHA1_Diff_SVNPROD_vs_SVNPRODHA(prod, LokiCollectionProd
               }
               Diff.push(r1)
             } else if (item.sha1SVN != prodHA.sha1SVN) {
-              //console.log("El checksum de %s no coincide", item.pathSVN)
-              var src1 = path  + '/PROD/' + item.pathSVN.substring(1)
-              var src2 = path  + '/PRODHA/' + prodHA['pathSVN'].substring(1)
+              console.log("El checksum de %s no coincide", item.pathSVN)
+              var src1 = path  + '/server/PROD/' + item.pathSVN.substring(1)
+              var src2 = path  + '/server/PRODHA/' + prodHA['pathSVN'].substring(1)
               var fileSrc1 = fs.readFileSync(src1, "utf8");
               var fileSrc2 = fs.readFileSync(src2, "utf8");
               var diff = await jsdiff.diffChars(fileSrc1, fileSrc2);
