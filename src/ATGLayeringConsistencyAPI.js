@@ -12,11 +12,21 @@ var _ = require('lodash');
 var fs = require('fs');
 var jsdiff = require('diff');
 
+//My Config
+const config = require('../config/config.json');
+const defaultConfig = config.development;
+const environment = process.env.NODE_ENV || 'development';
+const environmentConfig = config[environment];
+var finalConfig = _.merge(defaultConfig, environmentConfig);
+
+
 // My Modules
 var svn = require('./svn')
 var sha1 = require('./sha1')
-var db = require('./db')
+var db = require('./db')(finalConfig)
 var utils = require('./utils')
+
+
 
 // vars, lets & consts
 var svnUrl = "svn://172.17.203.59:3691/liverpool/informatica/sistemas/sisope/ecommerce_v11_3/branches/environment/env-configuration"
@@ -173,7 +183,8 @@ async function updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA()
   let playbook = './ansible/local/shell';
   let SERVERPRODHA_Path = "/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers"
   let playbookVars = {
-      cmd: 'scp -r mdiazm@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
+      //cmd: 'scp -r mdiazm@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
+      cmd: 'scp -r ' + finalConfig.scpUser + '@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
     }
   return new Promise((resolve, reject) =>{
     runShellPlaybook(playbook, playbookVars).then((ansibleOutput) => {
@@ -226,7 +237,7 @@ async function updateSHA1_Diff_SVNPROD_vs_SERVERPROD() {
   let playbook = './ansible/local/shell';
   let SERVERPROD_Path = "/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers"
   let playbookVars = {
-    cmd: 'scp -r mdiazm@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
+    cmd: 'scp -r ' + finalConfig.scpUser + '@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
   }
   return new Promise((resolve, reject) => {
     runShellPlaybook(playbook, playbookVars).then((ansibleOutput) => {
@@ -281,7 +292,8 @@ async function updateSHA1_Diff_SERVERPROD_vs_SERVERPRODHA(){
   let playbook = './ansible/local/shell';
   let SERVER_Path = "/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers"
   let playbookVars = {
-    cmd: 'scp -r mdiazm@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
+    //cmd: 'scp -r mdiazm@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
+    cmd: 'scp -r ' + finalConfig.scpUser + '@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
   }
 
   return new Promise((resolve,reject) => {
