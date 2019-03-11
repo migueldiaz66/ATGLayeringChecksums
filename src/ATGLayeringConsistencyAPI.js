@@ -240,7 +240,7 @@ async function updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA()
 async function updateSHA1_Diff_SVNPROD_vs_SERVERPROD() {
 
   let lokiDB = new loki('loki.json')
-  //let SVNPROD_ExportTo = "/tmp/SVNPROD_ExportTo";
+  let SVNPROD_ExportTo = "/tmp/SVNPROD_ExportTo";
   let exportTo = "/tmp/SHA1_Diff_SVNPROD_vs_SERVERPROD"
   let playbook = './ansible/local/shell';
   let SERVERPROD_Path = "/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers"
@@ -252,17 +252,17 @@ async function updateSHA1_Diff_SVNPROD_vs_SERVERPROD() {
   return new Promise((resolve, reject) => {
     runShellPlaybook(playbook, playbookVars).then((ansibleOutput) => {
       let ansibleOutputRes = ansibleOutput
-      svn.exportTo(svnUrl, exportTo, options).then((export_) => {
+      svn.exportTo(svnUrl, SVNPROD_ExportTo, options).then((export_) => {
         let exportRes = export_
         createLokiCollectionProd(lokiDB).then((lokiCollectionSVNPROD) => {
           let lokiCollectionSVNPRODRes = lokiCollectionSVNPROD
-          sha1.create(exportTo + '/PROD/').then((sha1SVNPRODFiles) => {
+          sha1.create(SVNPROD_ExportTo + '/PROD/').then((sha1SVNPRODFiles) => {
             let sha1SVNPRODFilesRes = sha1SVNPRODFiles
             insertLokiCollectionProd(lokiCollectionSVNPRODRes, sha1SVNPRODFilesRes).then((loadedLokiCollectionSVNPROD) => {
               let loadedLokiCollectionSVNPRODRes = loadedLokiCollectionSVNPROD
               createLokiCollectionProdHA(lokiDB).then((lokiCollectionSERVERPROD) => {
                 let lokiCollectionSERVERPRODRes = lokiCollectionSERVERPROD
-                sha1.create(SERVERPROD_Path + '/PROD/').then((sha1SERVERPRODFiles) => {
+                sha1.create(exportTo + '/PROD/').then((sha1SERVERPRODFiles) => {
                   let sha1SERVERPRODFilesRes = sha1SERVERPRODFiles
                   insertLokiCollectionProdHA(lokiCollectionSERVERPRODRes, sha1SERVERPRODFilesRes).then((loadedLokiCollectionSERVERPPRODHA) => {
                     let loadedLokiCollectionSERVERPPRODHARes = loadedLokiCollectionSERVERPPRODHA
