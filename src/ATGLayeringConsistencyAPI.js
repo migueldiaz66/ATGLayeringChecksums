@@ -19,6 +19,13 @@ const environment = process.env.NODE_ENV || 'development';
 const environmentConfig = config[environment];
 var finalConfig = _.merge(defaultConfig, environmentConfig);
 
+if (process.env.scpPass != undefined){
+  finalConfig.scpPass = process.env.scpPass
+}else{
+  console.log("no hay password del scp")
+  process.exit(1)
+}
+
 
 // My Modules
 var svn = require('./svn')
@@ -185,7 +192,7 @@ async function updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA()
   let playbookVars = {
       //cmd: 'scp -r mdiazm@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
       //cmd: 'scp -r ' + finalConfig.scpUser + '@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
-      cmd: 'scp -r ' + finalConfig.scpUser + '@' + finalConfig.scpServer + ':/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
+      cmd: 'sshpass -p' + finalConfig.scpPass + ' scp -r ' + finalConfig.scpUser + '@' + finalConfig.scpServer + ':/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
     }
   return new Promise((resolve, reject) =>{
     runShellPlaybook(playbook, playbookVars).then((ansibleOutput) => {
@@ -239,7 +246,8 @@ async function updateSHA1_Diff_SVNPROD_vs_SERVERPROD() {
   let SERVERPROD_Path = "/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers"
   let playbookVars = {
     //cmd: 'scp -r ' + finalConfig.scpUser + '@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
-    cmd: 'scp -r ' + finalConfig.scpUser + '@' + finalConfig.scpServer + ':/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
+    //cmd: 'scp -r ' + finalConfig.scpUser + '@' + finalConfig.scpServer + ':/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
+    cmd: 'sshpass -p' + finalConfig.scpPass + ' scp -r ' + finalConfig.scpUser + '@' + finalConfig.scpServer + ':/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
   }
   return new Promise((resolve, reject) => {
     runShellPlaybook(playbook, playbookVars).then((ansibleOutput) => {
@@ -295,7 +303,8 @@ async function updateSHA1_Diff_SERVERPROD_vs_SERVERPRODHA(){
   let SERVER_Path = "/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers"
   let playbookVars = {
     //cmd: 'scp -r mdiazm@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
-    cmd: 'scp -r ' + finalConfig.scpUser + '@' + finalConfig.scpServer + ':/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
+    //cmd: 'scp -r ' + finalConfig.scpUser + '@' + finalConfig.scpServer + ':/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
+    cmd: 'sshpass -p' + finalConfig.scpPass + ' scp -r ' + finalConfig.scpUser + '@' + finalConfig.scpServer + ':/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
   }
 
   return new Promise((resolve,reject) => {
