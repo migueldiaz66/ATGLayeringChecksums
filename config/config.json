@@ -1,10 +1,12 @@
 {
     "development": {
        "url": "mongodb://localhost:27017/Liv_Ominchannel_DRP_Health_Monitor",
-       "scpUser": "mdiazm"
+       "scpUser": "mdiazm",
+       "scpServer": "127.0.0.1"
     },
     "production": {
       "url": "mongodb://localhost:27017/Liv_Ominchannel_DRP_Health_Monitor",
-      "scpUser": "wladmin"
+      "scpUser": "wladmin",
+      "scpServer": "172.16.213.192"
     }
 }
