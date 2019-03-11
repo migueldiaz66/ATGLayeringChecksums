@@ -120,18 +120,18 @@ async function updateSHA1_ecommerce_v11_3_env_configuration() {
     k = 0
     s = 0
     t = 0
-    svn.exportTo(svnUrl, exportTo, options).then((exportRes) => {
+    svn.exportTo(svnUrl, exportTo + '/servers', options).then((exportRes) => {
       let e = exportRes
       createLokiCollectionProd(lokiDB).then((lokiCollectionProd) => {
         let lcprd = lokiCollectionProd
-        sha1.create(exportTo + '/PROD/').then((sha1Files) => {
+        sha1.create(exportTo + '/servers/PROD/').then((sha1Files) => {
           let prodSHA1Files = sha1Files
           insertLokiCollectionProd(lcprd, prodSHA1Files).then((loadedLokiCollectionProd) => {
             let llcprd = loadedLokiCollectionProd
             // console.log("loadedLokiCollectionProd ouside :" + JSON.stringify(llcprd.data, undefined, 2))
             createLokiCollectionProdHA(lokiDB).then((lokiCollectionProdHA) => {
               let lcprdHA = lokiCollectionProdHA
-              sha1.create(exportTo + '/PRODHA/').then((sha1FilesHA) => {
+              sha1.create(exportTo + '/servers/PRODHA/').then((sha1FilesHA) => {
                 let prodSHA1FilesHA = sha1FilesHA
                 insertLokiCollectionProdHA(lcprdHA, prodSHA1FilesHA).then((loadedLokiCollectionProdHA) => {
                   let llcprdHA = loadedLokiCollectionProdHA
@@ -297,6 +297,7 @@ async function updateSHA1_Diff_SVNPROD_vs_SERVERPROD() {
 
 }
 
+//ok en producción
 async function updateSHA1_Diff_SERVERPROD_vs_SERVERPRODHA(){
 
   let lokiDB = new loki('loki.json')

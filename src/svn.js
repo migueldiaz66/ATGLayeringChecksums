@@ -13,7 +13,7 @@ async function exportTo(src, dst, options) {
    
    return new Promise((resolve, reject) => {
     console.log("Cleaning " + dst)
-    utils.deletePathContent(dst).then(() => {
+   // utils.deletePathContent(dst).then(() => {
       console.log("Executing SVN export of " + src)
       svnUltimate.commands.export(
         src,
@@ -25,9 +25,9 @@ async function exportTo(src, dst, options) {
           else
             return reject(err)
         })
-    }).catch((err) => {
-        throw err
-    });
+ //   }).catch((err) => {
+ //       throw err
+ //   });
   })
 }
 
