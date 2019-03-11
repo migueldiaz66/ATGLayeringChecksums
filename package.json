@@ -4,6 +4,11 @@
   "description": "",
   "main": "src/api/server.js",
   "scripts": {
+    "serve": "node ./src/api/server.js",
+    "SVNPRODvsSVNPRODHA": "node ./src/updateSHA1_Diff_SVNPROD_vs_SVNPRODHA.js",
+    "SVNPRODHAvsSERVERPRODHA": "node ./src/updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA.js",
+    "SVNPRODvsSERVERPROD": "node ./src/updateSHA1_Diff_SVNPROD_vs_SERVERPROD.js",
+    "SERVERPRODvsSERVERPRODHA": "node ./src/updateSHA1_Diff_SERVERPROD_vs_SERVERPRODHA.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/12Factor-mx/ATGLayeringChecksums/issues"
   },
-  "homepage": "https://github.com/12Factor-mx/ATGLayeringChecksums#readme"
+  "homepage": "https://github.com/12Factor-mx/ATGLayeringChecksums#readme",
+  "dependencies": {
+    "node-ansible": "^0.5.5"
+  }
 }

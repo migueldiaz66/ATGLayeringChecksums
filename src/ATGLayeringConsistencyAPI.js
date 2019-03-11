@@ -95,23 +95,26 @@ async function updateSHA1_ecommerce_v11_3_env_configuration() {
  * 
  */
  async function updateSHA1_Diff_SVNPROD_vs_SVNPRODHA() {
+
+  let exportTo = "/tmp/SHA1_Diff_SVNPROD_vs_SVNPRODHA"
+  
   return new Promise(async (resolve, reject) => {
     let lokiDB = new loki('loki.json')
     k = 0
     s = 0
     t = 0
-    svn.exportTo(svnUrl, to, options).then( (exportRes) => {
+    svn.exportTo(svnUrl, exportTo, options).then((exportRes) => {
       let e = exportRes
       createLokiCollectionProd(lokiDB).then((lokiCollectionProd) => {
         let lcprd = lokiCollectionProd
-        sha1.create(to + '/PROD/').then((sha1Files) => {
+        sha1.create(exportTo + '/PROD/').then((sha1Files) => {
           let prodSHA1Files = sha1Files
           insertLokiCollectionProd(lcprd, prodSHA1Files).then((loadedLokiCollectionProd) => {
             let llcprd = loadedLokiCollectionProd
             // console.log("loadedLokiCollectionProd ouside :" + JSON.stringify(llcprd.data, undefined, 2))
             createLokiCollectionProdHA(lokiDB).then((lokiCollectionProdHA) => {
               let lcprdHA = lokiCollectionProdHA
-              sha1.create(to + '/PRODHA/').then((sha1FilesHA) => {
+              sha1.create(exportTo + '/PRODHA/').then((sha1FilesHA) => {
                 let prodSHA1FilesHA = sha1FilesHA
                 insertLokiCollectionProdHA(lcprdHA, prodSHA1FilesHA).then((loadedLokiCollectionProdHA) => {
                   let llcprdHA = loadedLokiCollectionProdHA
@@ -119,7 +122,7 @@ async function updateSHA1_ecommerce_v11_3_env_configuration() {
                   findAllLokiCollectionProd(llcprd).then((prod) => {
                     let prd = prod
                     //console.log("prod ouside :" + JSON.stringify(prd, undefined, 2))
-                    genereate_SHA1_Diff_SVNPROD_vs_SVNPRODHA(prd, lcprdHA).then((diff) => {
+                    genereate_SHA1_Diff_SVNPROD_vs_SVNPRODHA(prd, lcprdHA, exportTo).then((diff) => {
                       let d = diff
                       //console.log(JSON.stringify(diff, undefined, 2))
                       removeLoki(d).then((cleanDiff) => {
@@ -165,20 +168,21 @@ async function updateSHA1_ecommerce_v11_3_env_configuration() {
 async function updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA()
 {
   let lokiDB = new loki('loki.json')
-  let SVNPRODHA_ExportTo = "/tmp/SVNPRODHA_ExportTo";
+  //let SVNPRODHA_ExportTo = "/tmp/SVNPRODHA_ExportTo";
+  let exportTo = "/tmp/SHA1_Diff_SVNPRODHA_vs_SERVERPRODHA"
   let playbook = './ansible/local/shell';
   let SERVERPRODHA_Path = "/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers"
   let playbookVars = {
-      cmd: 'scp -r mdiazm@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + SVNPRODHA_ExportTo
+      cmd: 'scp -r mdiazm@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
     }
   return new Promise((resolve, reject) =>{
     runShellPlaybook(playbook, playbookVars).then((ansibleOutput) => {
       let ansibleOutputRes = ansibleOutput
-        svn.exportTo(svnUrl, SVNPRODHA_ExportTo, options).then((export_) => {
+        svn.exportTo(svnUrl, exportTo, options).then((export_) => {
           let exportRes = export_
           createLokiCollectionProd(lokiDB).then((lokiCollectionSVNPRODHA) => {
             let lokiCollectionSVNPRODHARes = lokiCollectionSVNPRODHA
-            sha1.create(SVNPRODHA_ExportTo + '/PRODHA/').then((sha1SVNPRODFiles) => {
+            sha1.create(exportTo + '/PRODHA/').then((sha1SVNPRODFiles) => {
               let sha1SVNPRODFilesRes = sha1SVNPRODFiles
               insertLokiCollectionProd(lokiCollectionSVNPRODHARes, sha1SVNPRODFilesRes).then((loadedLokiCollectionSVNPRODHA) => {
                 let loadedLokiCollectionSVNPRODHARes = loadedLokiCollectionSVNPRODHA
@@ -190,7 +194,7 @@ async function updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA()
                       let loadedLokiCollectionSERVERPPRODHARes = loadedLokiCollectionSERVERPPRODHA
                       findAllLokiCollectionProd(loadedLokiCollectionSVNPRODHARes).then((SVNPROD) => {
                         let = SVNPRODRes = SVNPROD
-                        genereate_SHA1_Diff_SVNPROD_vs_SVNPRODHA(SVNPRODRes, loadedLokiCollectionSERVERPPRODHARes).then((diff) => {
+                        genereate_SHA1_Diff_SVNPROD_vs_SVNPRODHA(SVNPRODRes, loadedLokiCollectionSERVERPPRODHARes, exportTo).then((diff) => {
                           let diffRes = diff
                           removeLoki(diffRes).then((cleanDiffRes) => {
                             let cleanDiff = cleanDiffRes
@@ -214,24 +218,24 @@ async function updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA()
   })
 }
  
-
 async function updateSHA1_Diff_SVNPROD_vs_SERVERPROD() {
 
   let lokiDB = new loki('loki.json')
-  let SVNPROD_ExportTo = "/tmp/SVNPROD_ExportTo";
+  //let SVNPROD_ExportTo = "/tmp/SVNPROD_ExportTo";
+  let exportTo = "/tmp/SHA1_Diff_SVNPROD_vs_SERVERPROD"
   let playbook = './ansible/local/shell';
   let SERVERPROD_Path = "/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers"
   let playbookVars = {
-    cmd: 'scp -r mdiazm@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + SVNPROD_ExportTo
+    cmd: 'scp -r mdiazm@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
   }
   return new Promise((resolve, reject) => {
     runShellPlaybook(playbook, playbookVars).then((ansibleOutput) => {
       let ansibleOutputRes = ansibleOutput
-      svn.exportTo(svnUrl, SVNPROD_ExportTo, options).then((export_) => {
+      svn.exportTo(svnUrl, exportTo, options).then((export_) => {
         let exportRes = export_
         createLokiCollectionProd(lokiDB).then((lokiCollectionSVNPROD) => {
           let lokiCollectionSVNPRODRes = lokiCollectionSVNPROD
-          sha1.create(SVNPROD_ExportTo + '/PROD/').then((sha1SVNPRODFiles) => {
+          sha1.create(exportTo + '/PROD/').then((sha1SVNPRODFiles) => {
             let sha1SVNPRODFilesRes = sha1SVNPRODFiles
             insertLokiCollectionProd(lokiCollectionSVNPRODRes, sha1SVNPRODFilesRes).then((loadedLokiCollectionSVNPROD) => {
               let loadedLokiCollectionSVNPRODRes = loadedLokiCollectionSVNPROD
@@ -244,7 +248,7 @@ async function updateSHA1_Diff_SVNPROD_vs_SERVERPROD() {
                     findAllLokiCollectionProd(loadedLokiCollectionSVNPRODRes).then((SVNPROD) => {
                       let = SVNPRODRes = SVNPROD
                       //todo change this to a new one
-                      genereate_SHA1_Diff_SVNPROD_vs_SVNPRODHA(SVNPRODRes, loadedLokiCollectionSERVERPPRODHARes).then((diff) => {
+                      genereate_SHA1_Diff_SVNPROD_vs_SVNPRODHA(SVNPRODRes, loadedLokiCollectionSERVERPPRODHARes, exportTo).then((diff) => {
                         let diffRes = diff
                         removeLoki(diffRes).then((cleanDiffRes) => {
                           let cleanDiff = cleanDiffRes
@@ -273,11 +277,11 @@ async function updateSHA1_Diff_SVNPROD_vs_SERVERPROD() {
 async function updateSHA1_Diff_SERVERPROD_vs_SERVERPRODHA(){
 
   let lokiDB = new loki('loki.json')
-  let SERVER_ExportTo = "/tmp/SERVER_ExportTo";
+  let exportTo = "/tmp/SHA1_Diff_SERVERPROD_vs_SERVERPRODHA"
   let playbook = './ansible/local/shell';
   let SERVER_Path = "/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers"
   let playbookVars = {
-    cmd: 'scp -r mdiazm@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + SERVER_ExportTo
+    cmd: 'scp -r mdiazm@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
   }
 
   return new Promise((resolve,reject) => {
@@ -285,20 +289,20 @@ async function updateSHA1_Diff_SERVERPROD_vs_SERVERPRODHA(){
       let ansibleOutput = ansibleOutputRes
       createLokiCollectionProd(lokiDB).then((lokiCollectionSERVERPRODRes) => {
         let lokiCollectionSERVERPROD = lokiCollectionSERVERPRODRes
-        sha1.create(SERVER_ExportTo + '/PROD/').then((sha1SERVERPRODFilesRes) => {
+        sha1.create(exportTo + '/PROD/').then((sha1SERVERPRODFilesRes) => {
           let sha1SERVERPRODFiles = sha1SERVERPRODFilesRes
           insertLokiCollectionProd(lokiCollectionSERVERPROD, sha1SERVERPRODFiles).then((loadedLokiCollectionSERVERPRODRes) => {
              let loadedLokiCollectionSERVERPROD = loadedLokiCollectionSERVERPRODRes
              createLokiCollectionProdHA(lokiDB).then((lokiCollectionSERVERPRODHARes) => {
               let lokiCollectionSERVERPRODHA = lokiCollectionSERVERPRODHARes
-              sha1.create(SERVER_ExportTo + '/PRODHA/').then((sha1SERVERPRODHAFilesRes) => {
+              sha1.create(exportTo + '/PRODHA/').then((sha1SERVERPRODHAFilesRes) => {
                 let sha1SERVERPRODHAFiles = sha1SERVERPRODHAFilesRes
                 insertLokiCollectionProdHA(lokiCollectionSERVERPRODHA, sha1SERVERPRODHAFiles).then((loadedLokiCollectionSERVERPPRODHARes) => {
                   let loadedLokiCollectionSERVERPPRODHA = loadedLokiCollectionSERVERPPRODHARes
                   findAllLokiCollectionProd(loadedLokiCollectionSERVERPROD).then((SERVERPRODRes) => {
                     let SERVERPROD = SERVERPRODRes
                     //todo change this to a new one
-                    genereate_SHA1_Diff_SVNPROD_vs_SVNPRODHA(SERVERPROD, loadedLokiCollectionSERVERPPRODHA, SERVER_ExportTo).then((diffRes) => {
+                    genereate_SHA1_Diff_SVNPROD_vs_SVNPRODHA(SERVERPROD, loadedLokiCollectionSERVERPPRODHA, exportTo).then((diffRes) => {
                       let diff = diffRes
                       removeLoki(diff).then((cleanDiffRes) => {
                         let cleanDiff = cleanDiffRes
