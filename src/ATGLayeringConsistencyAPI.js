@@ -182,7 +182,8 @@ async function updateSHA1_ecommerce_v11_3_env_configuration() {
  * 8) 
  * 
  */
-async function updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA()
+//Ok produccion
+ async function updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA()
 {
   let lokiDB = new loki('loki.json')
   let SVNPRODHA_ExportTo = "/tmp/SVNPRODHA_ExportTo";
@@ -237,7 +238,6 @@ async function updateSHA1_Diff_SVNPRODHA_vs_SERVERPRODHA()
   })
 }
  
-
 //ok en produccion
 async function updateSHA1_Diff_SVNPROD_vs_SERVERPROD() {
 
@@ -302,7 +302,6 @@ async function updateSHA1_Diff_SERVERPROD_vs_SERVERPRODHA(){
   let lokiDB = new loki('loki.json')
   let exportTo = "/tmp/SHA1_Diff_SERVERPROD_vs_SERVERPRODHA"
   let playbook = './ansible/local/shell';
-  let SERVER_Path = "/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers"
   let playbookVars = {
     //cmd: 'scp -r mdiazm@127.0.0.1:/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
     //cmd: 'scp -r ' + finalConfig.scpUser + '@' + finalConfig.scpServer + ':/u01/oracle/atg/data/ear/lp-store-a.ear/atg_bootstrap.war/WEB-INF/ATG-INF/home/servers' + ' ' + exportTo
@@ -314,13 +313,13 @@ async function updateSHA1_Diff_SERVERPROD_vs_SERVERPRODHA(){
       let ansibleOutput = ansibleOutputRes
       createLokiCollectionProd(lokiDB).then((lokiCollectionSERVERPRODRes) => {
         let lokiCollectionSERVERPROD = lokiCollectionSERVERPRODRes
-        sha1.create(exportTo + '/PROD/').then((sha1SERVERPRODFilesRes) => {
+        sha1.create(exportTo + '/servers/PROD/').then((sha1SERVERPRODFilesRes) => {
           let sha1SERVERPRODFiles = sha1SERVERPRODFilesRes
           insertLokiCollectionProd(lokiCollectionSERVERPROD, sha1SERVERPRODFiles).then((loadedLokiCollectionSERVERPRODRes) => {
              let loadedLokiCollectionSERVERPROD = loadedLokiCollectionSERVERPRODRes
              createLokiCollectionProdHA(lokiDB).then((lokiCollectionSERVERPRODHARes) => {
               let lokiCollectionSERVERPRODHA = lokiCollectionSERVERPRODHARes
-              sha1.create(exportTo + '/PRODHA/').then((sha1SERVERPRODHAFilesRes) => {
+              sha1.create(exportTo + '/servers/PRODHA/').then((sha1SERVERPRODHAFilesRes) => {
                 let sha1SERVERPRODHAFiles = sha1SERVERPRODHAFilesRes
                 insertLokiCollectionProdHA(lokiCollectionSERVERPRODHA, sha1SERVERPRODHAFiles).then((loadedLokiCollectionSERVERPPRODHARes) => {
                   let loadedLokiCollectionSERVERPPRODHA = loadedLokiCollectionSERVERPPRODHARes
