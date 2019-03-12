@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+var _ = require('lodash');
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
@@ -8,9 +9,15 @@ app.use(bodyParser.json())
 const dbConfig = require('../../config/database.config.js');
 const mongoose = require('mongoose');
 
+const config = require('../../config/config.json');
+const defaultConfig = config.development;
+const environment = process.env.NODE_ENV || 'development';
+const environmentConfig = config[environment];
+var finalConfig = _.merge(defaultConfig, environmentConfig);
+
 mongoose.Promise = global.Promise;
 
-mongoose.connect(dbConfig.url, {
+mongoose.connect(finalConfig.url, {
     useNewUrlParser: true
 }).then(() => {
     console.log("Successfully connected to the database");
@@ -30,8 +37,10 @@ app.get('/', (req, res) => {
 });
 
 require('./routes/router')(app, 'SERVERPROD_vs_SERVERPRODHA', 'SHA1_Diff_SERVERPROD_vs_SERVERPRODHA');
+require('./routes/router')(app, 'SVNPROD_vs_SERVERPROD', 'SHA1_Diff_SVNPROD_vs_SERVERPROD');
 require('./routes/router')(app, 'SVNPROD_vs_SVNPRODHA', 'SHA1_Diff_SVNPROD_vs_SVNPRODHA');
+require('./routes/router')(app, 'SVNPRODHA_vs_SERVERPRODHA', 'SHA1_Diff_SVNPRODHA_vs_SERVERPRODHA');
 
-app.listen(9002, '0.0.0.0', () => {
-    console.log("Server is listening on port 9002");
+app.listen(finalConfig.appPort, '0.0.0.0', () => {
+    console.log("Server is listening on port " + finalConfig.appPort);
 });

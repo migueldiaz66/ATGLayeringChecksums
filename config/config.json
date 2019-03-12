@@ -3,12 +3,14 @@
        "url": "mongodb://localhost:27017/Liv_Ominchannel_DRP_Health_Monitor",
        "scpUser": "mdiazm",
        "scpServer": "127.0.0.1",
-       "scpPass": ""
+       "scpPass": "",
+       "appPort": "9002"
     },
     "production": {
       "url": "mongodb://localhost:27017/Liv_Ominchannel_DRP_Health_Monitor",
       "scpUser": "wladmin",
       "scpServer": "172.16.213.192",
-      "scpPass": ""
+      "scpPass": "",
+      "appPort": "9001"
     }
 }
