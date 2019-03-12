@@ -24,9 +24,11 @@
   "dependencies": {
     "checksum": "^0.1.1",
     "diff": "^4.0.1",
+    "express": "^4.16.4",
     "lodash": "^4.17.11",
     "lokijs": "^1.5.6",
     "mongodb": "^3.1.13",
+    "mongoose": "^5.4.19",
     "node-ansible": "^0.5.5",
     "node-svn-ultimate": "^1.2.0"
   }
